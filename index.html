@@ -110,18 +110,14 @@
         <p>2022 - 2024</p>
       </div>
       <div class="career-node left">
-	<a href="https://www.mulialand.com/" target="_blank" rel="noreferrer">
         <img src="images/mulia-group.png" alt="Mulia Group" class="career-logo-mulia">
-	</a>
         <h3>Tax Staff</h3>
         <p>Mulia Group</p>
         <p>2025</p>
       </div>
       <div class="connector"></div>
       <div class="career-node right">
-	<a href="https://bmw-bestindo.co.id/" target="_blank" rel="noreferrer">
         <img src="images/bmw.png" alt="PT. Bestindo Car Utama" class="career-logo career-logo-circle">
-	</a>
         <h3>Accounting &amp; Tax</h3>
         <p>PT. Bestindo Car Utama</p>
         <p>2025 - Now</p>
@@ -150,7 +146,7 @@
     <a href="https://www.linkedin.com/in/dellya-putri-14a64a218/" target="_blank">
       <img src="images/linkedin.png" alt="LinkedIn">
     </a>
-    <a href="https://www.instagram.com/dell.yaa/" target="_blank">
+    <a href="https://www.instagram.com/dellyaputrii_/" target="_blank">
       <img src="images/instagram.png" alt="Instagram">
     </a>
   </div>
@@ -217,13 +213,21 @@
   var skillsObs = new IntersectionObserver(function (entries) {
     if (entries[0].isIntersecting && !barsAnimated) {
       barsAnimated = true;
+      var DURATION = 3000;
       document.querySelectorAll('.progress-bar-fill').forEach(function (bar) {
         var v = parseInt(bar.getAttribute('data-value'));
-        var c = 0;
-        var id = setInterval(function () {
-          if (c <= v) { bar.style.width = c + '%'; bar.textContent = c + '%'; c++; }
-          else clearInterval(id);
-        }, 12);
+        bar.style.width = v + '%';
+        var start = null;
+        function step(ts) {
+          if (!start) start = ts;
+          var p = Math.min((ts - start) / DURATION, 1);
+          var eased = 1 - Math.pow(1 - p, 2);
+          var current = Math.round(eased * v);
+          bar.textContent = current + '%';
+          if (p < 1) requestAnimationFrame(step);
+          else bar.textContent = v + '%';
+        }
+        requestAnimationFrame(step);
       });
       skillsObs.disconnect();
     }
